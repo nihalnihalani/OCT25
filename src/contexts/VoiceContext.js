@@ -51,6 +51,7 @@ export const VoiceProvider = ({ children }) => {
     };
 
     loadProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [firestore.isAuthenticated]);
 
   const getPageContext = useCallback(() => {

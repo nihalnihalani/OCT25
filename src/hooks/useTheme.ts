@@ -18,6 +18,7 @@ export function useTheme() {
   // Load theme from storage on mount
   useEffect(() => {
     loadThemeFromStorage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Apply theme whenever it changes

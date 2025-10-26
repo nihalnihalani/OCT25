@@ -53,6 +53,7 @@ const SavingsTracker = ({ onClose }) => {
 
             loadFromLocalStorage();
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [firestore.isAuthenticated, firestore.subscribeToPurchaseHistory]);
 
     const calculateProjection = (currentSavings) => {

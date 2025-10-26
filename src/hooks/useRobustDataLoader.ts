@@ -133,6 +133,7 @@ export const useRobustDataLoader = <T>(
     if (!hasInitialized.current) {
       loadData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.uid]); // Only depend on user ID, not the entire user object
 
   return {

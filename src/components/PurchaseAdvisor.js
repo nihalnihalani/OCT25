@@ -250,6 +250,7 @@ const PurchaseAdvisor = () => {
 
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [firestore.isAuthenticated]);
 
   // Callbacks

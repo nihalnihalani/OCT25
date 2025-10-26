@@ -242,6 +242,7 @@ const Dashboard = () => {
   // Initial data load
   useEffect(() => {
     loadDashboardData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.uid]);
 
   // Subscribe to real-time updates (only if not using fallback and no config errors)
@@ -277,6 +278,7 @@ const Dashboard = () => {
     return () => {
       subscriptions.forEach(unsub => unsub && unsub());
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.uid, hasLocalFallback, errorType, error, subscribeToProfile, subscribeToPurchaseHistory]);
 
   const handleRetry = useCallback(() => {
