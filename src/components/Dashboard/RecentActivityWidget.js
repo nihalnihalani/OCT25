@@ -13,8 +13,23 @@ const RecentActivityWidget = ({ purchases, onViewAll }) => {
 
   // Format date
   const formatDate = (date) => {
+    if (!date) return 'N/A';
+    
     const now = new Date();
-    const purchaseDate = date instanceof Date ? date : date.toDate();
+    // Handle different date formats: Date object, Firestore timestamp, or string
+    let purchaseDate;
+    if (date instanceof Date) {
+      purchaseDate = date;
+    } else if (date && typeof date.toDate === 'function') {
+      // Firestore timestamp
+      purchaseDate = date.toDate();
+    } else if (typeof date === 'string' || typeof date === 'number') {
+      // String or timestamp
+      purchaseDate = new Date(date);
+    } else {
+      return 'Invalid date';
+    }
+    
     const diffTime = Math.abs(now - purchaseDate);
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
@@ -73,7 +88,7 @@ const RecentActivityWidget = ({ purchases, onViewAll }) => {
               <div className="activity-details">
                 <div className="activity-header">
                   <h4 className="item-name">{purchase.itemName}</h4>
-                  <span className="item-date">{formatDate(purchase.date)}</span>
+                  <span className="item-date">{formatDate(purchase.date || purchase.timestamp)}</span>
                 </div>
                 
                 <div className="activity-info">
