@@ -80,9 +80,10 @@ const ChatInterface: React.FC = () => {
       if (isManualClear) return;
       
       let isNewUser = false;
+      let firestoreChat = null;
 
       if (firestore.isAuthenticated) {
-        const firestoreChat = await firestore.getChat();
+        firestoreChat = await firestore.getChat();
         if (firestoreChat && firestoreChat.length > 0 && firestoreChat[0].messages) {
           setMessages(firestoreChat[0].messages);
           return;
@@ -106,8 +107,7 @@ const ChatInterface: React.FC = () => {
       }
 
       // If no chat history exists, auto-start voice session for verbal welcome
-      const chatHistory = firestore.isAuthenticated ? await firestore.getChat() : [];
-      if (isNewUser && (!firestore.isAuthenticated || !chatHistory.length || !chatHistory[0]?.messages?.length)) {
+      if (isNewUser && (!firestore.isAuthenticated || !firestoreChat || !firestoreChat.length || !firestoreChat[0]?.messages?.length)) {
         // Show a brief text message while starting voice session
         const preparingMessage: Message = {
           id: crypto.randomUUID(),
