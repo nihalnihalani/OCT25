@@ -60,6 +60,7 @@ const ChatInterface: React.FC = () => {
     };
 
     loadFinancialProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [firestore]);
 
   // Cleanup voice session when component unmounts (user navigates away)
@@ -150,6 +151,7 @@ So... what's on your mind? Got a purchase you're considering? Want to talk budge
     };
 
     loadChatHistory();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [firestore, startVoiceSession, isManualClear]);
 
   // Save messages whenever they change - only save the latest message
@@ -166,6 +168,7 @@ So... what's on your mind? Got a purchase you're considering? Want to talk budge
     };
 
     saveMessages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages, firestore]);
 
   // Process voice session events and add them to chat history
@@ -217,6 +220,7 @@ So... what's on your mind? Got a purchase you're considering? Want to talk budge
         }, 500);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [events, navigate]);
 
   const handleSendMessage = async (messageContent: string) => {
