@@ -20,7 +20,7 @@ import ProMode from "./ProMode";
 import UserGuide from "./UserGuide";
 import FinanceFeed from "./FinanceFeed";
 import ChatInterface from "./ChatInterface";
-import { Dashboard } from "./Dashboard";
+import Dashboard from "./Dashboard/Dashboard";
 import ThemeSettings from "./ThemeSettings";
 import "../styles/App.css";
 import "../styles/OfflineIndicator.css";
