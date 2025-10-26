@@ -60,7 +60,7 @@ const ChatInterface: React.FC = () => {
     };
 
     loadFinancialProfile();
-  }, [firestore.isAuthenticated]);
+  }, [firestore]);
 
   // Cleanup voice session when component unmounts (user navigates away)
   useEffect(() => {
@@ -150,7 +150,7 @@ So... what's on your mind? Got a purchase you're considering? Want to talk budge
     };
 
     loadChatHistory();
-  }, [firestore.isAuthenticated, startVoiceSession, isManualClear]);
+  }, [firestore, startVoiceSession, isManualClear]);
 
   // Save messages whenever they change - only save the latest message
   useEffect(() => {
@@ -166,7 +166,7 @@ So... what's on your mind? Got a purchase you're considering? Want to talk budge
     };
 
     saveMessages();
-  }, [messages, firestore.isAuthenticated]);
+  }, [messages, firestore]);
 
   // Process voice session events and add them to chat history
   useEffect(() => {
