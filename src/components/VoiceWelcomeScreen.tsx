@@ -9,8 +9,33 @@ const VoiceWelcomeScreen: React.FC<VoiceWelcomeScreenProps> = ({
   onDismiss,
   onStartVoice
 }) => {
+  const overlayStyle: React.CSSProperties = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000,
+    backdropFilter: 'blur(5px)',
+    padding: '16px'
+  };
+
+  const cardStyle: React.CSSProperties = {
+    background: 'white',
+    borderRadius: '16px',
+    padding: '32px',
+    maxWidth: '480px',
+    width: '100%',
+    textAlign: 'center',
+    boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)'
+  };
+
   return (
-    <div className="voice-welcome-overlay">
+    <div style={overlayStyle} className="voice-welcome-overlay">
       <div className="voice-welcome-card">
         <div className="voice-welcome-animation">
           <div className="voice-icon-large">🎤</div>
