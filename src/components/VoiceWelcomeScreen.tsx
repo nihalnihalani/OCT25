@@ -36,7 +36,7 @@ const VoiceWelcomeScreen: React.FC<VoiceWelcomeScreenProps> = ({
 
   return (
     <div style={overlayStyle} className="voice-welcome-overlay">
-      <div className="voice-welcome-card">
+      <div style={cardStyle} className="voice-welcome-card">
         <div className="voice-welcome-animation">
           <div className="voice-icon-large">🎤</div>
           <div className="sound-waves">
