@@ -13,22 +13,67 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
 
-  // Reset and load fresh data
+  // Load dashboard data
   useEffect(() => {
     const initDashboard = async () => {
       try {
         setLoading(true);
-        // Clear old data
-        localStorage.removeItem('financialProfile');
-        localStorage.removeItem('quickFinancialProfile');
-        localStorage.removeItem('purchaseHistory');
         
-        // Always start with default empty data
+        // Load purchase history from localStorage or Firestore
+        let history = [];
+        let totalSaved = 0;
+        
+        // Try to load from Firestore first
+        if (firestore.isAuthenticated) {
+          try {
+            const firestoreHistory = await firestore.getPurchaseHistory();
+            if (firestoreHistory && firestoreHistory.length > 0) {
+              history = firestoreHistory;
+            }
+          } catch (error) {
+            console.error('Error loading from Firestore:', error);
+          }
+        }
+        
+        // Fallback to localStorage if no Firestore data
+        if (history.length === 0) {
+          const storedHistory = localStorage.getItem('purchaseHistory');
+          if (storedHistory) {
+            try {
+              history = JSON.parse(storedHistory);
+            } catch (error) {
+              console.error('Error parsing stored history:', error);
+              history = [];
+            }
+          }
+        }
+        
+        // Calculate total saved from history
+        totalSaved = history.reduce((sum, item) => {
+          if (item.decision === "Don't Buy") {
+            return sum + (item.itemCost || 0);
+          } else if (item.decision === "Buy" && item.savings) {
+            return sum + (item.savings || 0);
+          }
+          return sum;
+        }, 0);
+        
+        // Calculate years to million if we have savings
+        let yearsToMillion = null;
+        if (totalSaved > 0) {
+          // Compound interest calculation: A = P(1 + r)^n
+          // Solving for n: n = log(A/P) / log(1 + r)
+          const target = 1000000;
+          const rate = 0.15;
+          yearsToMillion = Math.log(target / totalSaved) / Math.log(1 + rate);
+          yearsToMillion = Math.ceil(yearsToMillion);
+        }
+        
         setData({ 
           profile: null, 
-          history: [],
-          totalSaved: 0,
-          yearsToMillion: null
+          history: history,
+          totalSaved: totalSaved,
+          yearsToMillion: yearsToMillion
         });
         setLoading(false);
       } catch (error) {
@@ -39,7 +84,7 @@ const Dashboard = () => {
 
     initDashboard();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [firestore.isAuthenticated]);
 
   if (loading) {
     return (
