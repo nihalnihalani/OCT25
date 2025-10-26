@@ -127,10 +127,29 @@ const SavingsTracker = ({ onClose }) => {
                     <h3>Purchase History</h3>
                     <div className="history-list">
                         {history.length > 0 ? (
-                            history.map((item, index) => (
+                            history.map((item, index) => {
+                                // Handle different date formats
+                                const formatDate = (date) => {
+                                    if (!date) return 'N/A';
+                                    try {
+                                        if (date instanceof Date) {
+                                            return date.toLocaleDateString();
+                                        } else if (date && typeof date.toDate === 'function') {
+                                            // Firestore timestamp
+                                            return date.toDate().toLocaleDateString();
+                                        } else if (typeof date === 'string' || typeof date === 'number') {
+                                            return new Date(date).toLocaleDateString();
+                                        }
+                                        return 'Invalid date';
+                                    } catch (e) {
+                                        return 'N/A';
+                                    }
+                                };
+                                
+                                return (
                                 <div key={index} className="history-item">
                                     <div className="item-details">
-                                        <span className="item-date">{item.date.toLocaleDateString()}</span>
+                                        <span className="item-date">{formatDate(item.date || item.timestamp)}</span>
                                         <strong className="item-name">{item.itemName}</strong>
                                         <span className={`item-decision ${item.decision.toLowerCase().replace("'", "")}`}>{item.decision}</span>
                                     </div>
@@ -144,7 +163,8 @@ const SavingsTracker = ({ onClose }) => {
                                         )}
                                     </div>
                                 </div>
-                            ))
+                                );
+                            })
                         ) : (
                             <p>No purchase history yet. Analyze a purchase to start tracking!</p>
                         )}
