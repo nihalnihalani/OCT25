@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router-dom";
 import { AuthProvider, useAuth } from "../contexts/AuthContext";
 import { VoiceProvider } from "../contexts/VoiceContext";
+import { ThemeProvider } from "../contexts/ThemeContext";
 import { FirestoreErrorBoundary } from "./FirestoreErrorBoundary";
 import OfflineIndicator from "./OfflineIndicator";
 import FloatingVoiceButton from "./FloatingVoiceButton";
@@ -20,8 +21,10 @@ import UserGuide from "./UserGuide";
 import FinanceFeed from "./FinanceFeed";
 import ChatInterface from "./ChatInterface";
 import { Dashboard } from "./Dashboard";
+import ThemeSettings from "./ThemeSettings";
 import "../styles/App.css";
 import "../styles/OfflineIndicator.css";
+import "../styles/ThemeSettings.css";
 
 // Header Component with Hamburger Menu
 const Header = () => {
@@ -87,6 +90,14 @@ const Header = () => {
           >
             <span className="nav-drawer-icon">📺</span>
             Finance Feed
+          </Link>
+          <Link 
+            to="/theme" 
+            className={`nav-drawer-link ${location.pathname === '/theme' ? 'active' : ''}`}
+            onClick={closeMenu}
+          >
+            <span className="nav-drawer-icon">🎨</span>
+            Theme Settings
           </Link>
           {!user && (
             <Link 
@@ -176,12 +187,13 @@ const AppInitializer = () => {
 
 const App = () => {
   return (
-    <AuthProvider>
-      <FirestoreErrorBoundary>
-        <Router>
-          <ScrollToTop />
-          <VoiceProvider>
-            <div className="app-layout">
+    <ThemeProvider>
+      <AuthProvider>
+        <FirestoreErrorBoundary>
+          <Router>
+            <ScrollToTop />
+            <VoiceProvider>
+              <div className="app-layout">
               <AppInitializer />
               <OfflineIndicator />
               <Header />
@@ -203,16 +215,18 @@ const App = () => {
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/terms" element={<TermsPage />} />
                   <Route path="/privacy" element={<PrivacyPage />} />
+                  <Route path="/theme" element={<ThemeSettings />} />
                 </Routes>
               </main>
 
               <Footer />
               <Navigation />
             </div>
-          </VoiceProvider>
-        </Router>
-      </FirestoreErrorBoundary>
-    </AuthProvider>
+            </VoiceProvider>
+          </Router>
+        </FirestoreErrorBoundary>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 
